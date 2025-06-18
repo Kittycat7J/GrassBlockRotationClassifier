@@ -382,13 +382,13 @@ def export_selected_squares():
             # Just use the first grid square as reference point
             if grid_squares:
                 main_tl_x = grid_squares[0][0][0]
-                main_tl_y = grid_squares[0][0][1]
+                main_tl_z = grid_squares[0][0][1]
             else:
                 print("Error: No grid squares available")
                 return
         else:
             main_tl_x = grid_squares[main_square_tl][0][0]
-            main_tl_y = grid_squares[main_square_tl][0][1]
+            main_tl_z = grid_squares[main_square_tl][0][1]
         
         # Save each selected square as a line in the text file
         for square_idx in selected_squares:
@@ -396,15 +396,15 @@ def export_selected_squares():
                 continue
                 
             # Get the coordinates of this square
-            (tl_x, tl_y), (br_x, br_y) = grid_squares[square_idx]
+            (tl_x, tl_z), (br_x, br_y) = grid_squares[square_idx]
             
             # Calculate the relative position to the main square in grid cells
             rel_x = int((tl_x - main_tl_x) / square_size)
-            rel_y = int((tl_y - main_tl_y) / square_size)
-            
+            rel_z = int((tl_z - main_tl_z) / square_size)
+            rel_y = 0
             # Default rotation and boolean values
             rotation = 0  # Replace with actual rotation logic if needed
-            
+            isSide = 0
             
             # Check if we have a prediction for this square
             if square_idx in grid_predictions:
@@ -412,7 +412,7 @@ def export_selected_squares():
                 rotation = int(class_name)  # Assuming class_name corresponds to rotation
                 
             # Write the formatted line to the file
-            f.write(f"formation.add(new RotationInfo({rel_x},0,{rel_y},{rotation},false));\n")
+            f.write(f"{rel_x},{rel_y},{rel_z},{rotation},{isSide}\n")
     
     print(f"Exported data to '{output_file}'")
 
