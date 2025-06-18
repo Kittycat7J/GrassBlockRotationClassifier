@@ -14,7 +14,8 @@ ONLY FOR GRASS BLOCKS
 2. Watch the corrected image update.
 3. Tune the points.
 4. Click on a square in the grid to classify it.
-5. Press e to export image.
+5. Press e to export rotation data.
+6. Goto the [Texture Rotations](https://github.com/19MisterX98/TextureRotations) repository and paste exported_squares.txt into the data feild.
 
 ## How to tune points.
 - The red point is the last selected point.
