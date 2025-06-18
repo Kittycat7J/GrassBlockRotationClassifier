@@ -404,7 +404,7 @@ def export_selected_squares():
             
             # Default rotation and boolean values
             rotation = 0  # Replace with actual rotation logic if needed
-            boolean_value = False
+            
             
             # Check if we have a prediction for this square
             if square_idx in grid_predictions:
@@ -412,7 +412,7 @@ def export_selected_squares():
                 rotation = int(class_name)  # Assuming class_name corresponds to rotation
                 
             # Write the formatted line to the file
-            f.write(f"formation.add(new RotationInfo({rel_x},0,{rel_y},{rotation},{boolean_value}));\n")
+            f.write(f"formation.add(new RotationInfo({rel_x},0,{rel_y},{rotation},false));\n")
     
     print(f"Exported data to '{output_file}'")
 
