@@ -10,12 +10,12 @@ ONLY FOR GRASS BLOCKS
 2. python main.py --image <image_path>
 
 ## How to use.
-1. Click on 4 corners of a block or square. (top left, top right, bottom left, bottom right)
+1. Click on 4 corners of a block or square in a clockwise maner, starting at the North-West corner of the block.
 2. Watch the corrected image update.
 3. Tune the points.
 4. Click on a square in the grid to classify it.
 5. Press e to export rotation data.
-6. Goto the [Texture Rotations](https://github.com/19MisterX98/TextureRotations) repository and paste exported_squares.txt into the data feild.
+6. Goto the [Texture Rotations](https://github.com/19MisterX98/TextureRotations) or [texture finder cuda](https://github.com/Selyss/texture-finder-cuda) repository and run using formation.txt.
 
 ## How to tune points.
 - The red point is the last selected point.
