@@ -347,7 +347,36 @@ def apply_perspective_transform():
     cv2.line(warped, tuple(square_points[1]), tuple(square_points[2]), square_color, thickness)
     cv2.line(warped, tuple(square_points[2]), tuple(square_points[3]), square_color, thickness)
     cv2.line(warped, tuple(square_points[3]), tuple(square_points[0]), square_color, thickness)
-    
+    # Add text box with x, y, z coordinates to each square
+    for idx, square in enumerate(grid_squares):
+        top_left, bottom_right = square
+        center_x = (top_left[0] + bottom_right[0]) // 2
+        center_y = (top_left[1] + bottom_right[1]) // 2
+
+        # Adjust the text position to be at 2/3 down point of each square
+        text_y = top_left[1] + (3 * (bottom_right[1] - top_left[1])) // 4
+
+        # Calculate relative x, y, z coordinates
+        rel_x = (top_left[0] - grid_squares[0][0][0]) // square_size
+        rel_z = (top_left[1] - grid_squares[0][0][1]) // square_size
+        rel_y = 0  # Default y-coordinate
+
+        # Prepare text
+        text = f"{rel_x}, {rel_y}, {rel_z}"
+
+        # Get text size to center it properly
+        text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)[0]
+        text_x = center_x - text_size[0] // 2
+
+        # Draw a background rectangle for better visibility
+        cv2.rectangle(warped,
+                      (text_x - 5, text_y - text_size[1] - 5),
+                      (text_x + text_size[0] + 5, text_y + 5),
+                      (0, 0, 0), -1)
+
+        # Draw the text
+        cv2.putText(warped, text, (text_x, text_y),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255), 1)
     # Display the warped image with the grid overlay
     cv2.imshow("Perspective Corrected", warped)
     
@@ -476,7 +505,7 @@ def main(image_path=None):
                 cv2.imshow("Perspective Corrected", warped)
                 warped = None
         
-        # If 'e' is pressed, export the image
+        # If 'e' is pressed, export
         elif key == ord('e'):
             if warped is not None:
                 if not selected_squares:
@@ -567,7 +596,10 @@ def main(image_path=None):
                 # Update the perspective transform if we have all 4 points
                 if len(points) == 4:
                     apply_perspective_transform()
-        
+        # If 't' is pressed, run the test_click_event function
+        elif key == ord('t'):
+            print("Running test_click_event()...")
+            test_click_event()
         # Number keys 1-4 for selecting points
         elif key >= ord('1') and key <= ord('4'):
             point_num = key - ord('1')  # Convert to 0-based index
@@ -588,6 +620,13 @@ def main(image_path=None):
     
     # Close all windows
     cv2.destroyAllWindows()
+
+def test_click_event():
+    global points
+    test_points = [(681, 339), (821, 449), (622, 579), (507, 415)]
+    # Simulate mouse clicks at the test points
+    for x, y in test_points:
+        click_event(cv2.EVENT_LBUTTONDOWN, x, y, None, None)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Interactive perspective correction tool")
