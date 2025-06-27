@@ -54,17 +54,27 @@ def apply_skew(img, direction, shift):
     dst_quad = get_quad_coords(direction, shift)
     return img.transform(IMAGE_SIZE, Image.QUAD, dst_quad, Image.BICUBIC)
 
-def apply_flip(img, flip_type):
-    if flip_type is None:
-        return img
-    if flip_type == "both":
-        return img.transpose(Image.FLIP_LEFT_RIGHT).transpose(Image.FLIP_TOP_BOTTOM)
-    return img.transpose(flip_type)
+# def apply_flip(img, flip_type):
+#     if flip_type is None:
+#         return img
+#     if flip_type == "both":
+#         return img.transpose(Image.FLIP_LEFT_RIGHT).transpose(Image.FLIP_TOP_BOTTOM)
+#     return img.transpose(flip_type)
+
+def apply_rotation(img, rotation_type):
+    if rotation_type == 0:
+        return img  # 0 degrees
+    elif rotation_type == 1:
+        return img.rotate(-90, expand=True)  # 90 degrees clockwise
+    elif rotation_type == 2:
+        return img.rotate(-180, expand=True)  # 180 degrees
+    elif rotation_type == 3:
+        return img.rotate(-270, expand=True)  # 270 degrees clockwise
 
 # === MAIN ===
 
 # Load and resize input
-img = Image.open(INPUT_IMAGE_PATH).convert("RGB").resize(IMAGE_SIZE)
+img = Image.open(INPUT_IMAGE_PATH).convert("L").resize(IMAGE_SIZE)  # Convert to grayscale
 
 # Make output folders
 for class_id in range(4):
@@ -72,14 +82,13 @@ for class_id in range(4):
 
 # Generate variations
 for class_id in range(4):
-    flip_type = FLIP_TYPES[class_id]
-    flipped = apply_flip(img, flip_type)
+    rotated = apply_rotation(img, class_id)  # Apply rotation based on class ID
 
     count = 0
     for direction in DIRECTIONS:
         for step in range(1, VARIATIONS_PER_DIRECTION + 1):
             shift = int(MAX_SHIFT * step / VARIATIONS_PER_DIRECTION)
-            skewed = apply_skew(flipped, direction, shift)
-            out_path = os.path.join(OUTPUT_DIR, f"class_{class_id}", f"img_{count:03}.png")
+            skewed = apply_skew(rotated, direction, shift)
+            out_path = os.path.join(OUTPUT_DIR, f"class_{class_id}", f"img_{count:03}({class_id}).png")
             skewed.save(out_path)
             count += 1

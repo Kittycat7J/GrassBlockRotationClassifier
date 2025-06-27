@@ -2,3 +2,6 @@
 /__pycache__
 exported_squares.txt
 /temp
+/training/output
+/processed_data
+/data
