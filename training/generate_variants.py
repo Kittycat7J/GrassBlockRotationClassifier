@@ -54,12 +54,10 @@ def apply_skew(img, direction, shift):
     dst_quad = get_quad_coords(direction, shift)
     return img.transform(IMAGE_SIZE, Image.QUAD, dst_quad, Image.BICUBIC)
 
-# def apply_flip(img, flip_type):
-#     if flip_type is None:
-#         return img
-#     if flip_type == "both":
-#         return img.transpose(Image.FLIP_LEFT_RIGHT).transpose(Image.FLIP_TOP_BOTTOM)
-#     return img.transpose(flip_type)
+def apply_flip(img, flip_type):
+    if flip_type == "diagonal":
+        return img.transpose(Image.TRANSPOSE)  # Flip over y = x
+    return img  # No flip if flip_type is not "diagonal"
 
 def apply_rotation(img, rotation_type):
     if rotation_type == 0:
@@ -86,9 +84,11 @@ for class_id in range(4):
 
     count = 0
     for direction in DIRECTIONS:
-        for step in range(1, VARIATIONS_PER_DIRECTION + 1):
+        for step in range(VARIATIONS_PER_DIRECTION + 1):
             shift = int(MAX_SHIFT * step / VARIATIONS_PER_DIRECTION)
             skewed = apply_skew(rotated, direction, shift)
+            flipped = apply_flip(skewed, "diagonal")
             out_path = os.path.join(OUTPUT_DIR, f"class_{class_id}", f"img_{count:03}({class_id}).png")
-            skewed.save(out_path)
+            flipped.save(out_path)
             count += 1
+            print(f"Saved: {out_path}")
