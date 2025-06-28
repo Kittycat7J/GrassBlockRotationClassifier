@@ -35,4 +35,4 @@ The dataset came from fanda857.
 # training gen
 r
 ``python generate_variants.py``
-defaults to input.png set it to a 0° rotation top texture. I thought --alt did something but maybe I'm crazy 
+defaults to input.png set it to a 0° rotation top texture. I thought --alt did something but maybe I'm crazy oh I did, it's in the datagen branch
