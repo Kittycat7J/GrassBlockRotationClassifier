@@ -31,3 +31,7 @@ ONLY FOR GRASS BLOCKS
 
 This project contains the dataset and processed dataset used for training the model.
 The dataset came from fanda857.
+# training gen
+
+``python generate_variants.py``
+defaults to input.png set it to a 0° rotation top texture.  ``--alt`` is for stone deep slate and bedrock 
