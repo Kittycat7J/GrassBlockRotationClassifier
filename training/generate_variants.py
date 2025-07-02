@@ -70,7 +70,9 @@ def apply_rotation(img, rotation_type):
         return img.rotate(-270, expand=True)  # 270 degrees clockwise
 
 # === MAIN ===
-
+# Copy the input image to the output directory
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
 # Load and resize input
 img = Image.open(INPUT_IMAGE_PATH).convert("L").resize(IMAGE_SIZE)  # Convert to grayscale
 
@@ -84,7 +86,7 @@ for class_id in range(4):
 
     count = 0
     for direction in DIRECTIONS:
-        for step in range(VARIATIONS_PER_DIRECTION + 1):
+        for step in range(1,VARIATIONS_PER_DIRECTION + 1):
             shift = int(MAX_SHIFT * step / VARIATIONS_PER_DIRECTION)
             skewed = apply_skew(rotated, direction, shift)
             flipped = apply_flip(skewed, "diagonal")
